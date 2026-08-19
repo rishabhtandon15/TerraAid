@@ -41,7 +41,7 @@ permissions = CAMERA, INTERNET, ACCESS_FINE_LOCATION, ACCESS_COARSE_LOCATION, RE
 android.api = 33
 
 # (int) Minimum API your APK will support
-android.minapi = 21
+android.minapi = 24
 
 # (str) Android NDK version
 android.ndk = 25b
