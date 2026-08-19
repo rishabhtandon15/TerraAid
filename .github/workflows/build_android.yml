@@ -1,0 +1,43 @@
+name: Build TerraAid Android APK
+
+on:
+  push:
+    branches: [ main, master ]
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v3
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.10'
+
+      - name: Set up Java JDK
+        uses: actions/setup-java@v3
+        with:
+          distribution: 'temurin'
+          java-version: '17'
+
+      - name: Install Dependencies & Buildozer
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y build-essential ccache git libffi-dev libssl-dev python3-dev libsqlite3-dev zlib1g-dev openjdk-17-jdk unzip zip
+          pip install --upgrade pip setuptools
+          pip install buildozer cython
+
+      - name: Build APK with Buildozer
+        run: |
+          cd TerraAid
+          buildozer -v android debug
+
+      - name: Upload APK Artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: TerraAid-Android-APK
+          path: TerraAid/bin/*.apk
